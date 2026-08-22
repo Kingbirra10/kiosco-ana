@@ -14,6 +14,7 @@ respetando el orden de productos que está en index.html:
   imagen8.jpg   -> Alfajor Aguila
   imagen9.jpg   -> Chizitos
   imagen10.jpg  -> Larguitos
+  imagen11.jpg  -> Vino Toro 750cc
 
 RECOMENDACIONES
 ----------------
