@@ -1,0 +1,28 @@
+CÓMO NOMBRAR TUS FOTOS
+=======================
+
+Las fotos van en esta carpeta ("images") con estos nombres exactos,
+respetando el orden de productos que está en index.html:
+
+  imagen1.jpg   -> Lata Brahma 473ml
+  imagen2.jpg   -> Brahma 1 Lt
+  imagen3.jpg   -> Manaos 2.25 Lt
+  imagen4.jpg   -> Speed 473ml
+  imagen5.jpg   -> Papas Slices 100g
+  imagen6.jpg   -> Paquete Slice Cheddar y Jamón
+  imagen7.jpg   -> Maní Cervecero 100g
+  imagen8.jpg   -> Alfajor Aguila
+  imagen9.jpg   -> Chizitos
+  imagen10.jpg  -> Larguitos
+
+RECOMENDACIONES
+----------------
+- Formato: .jpg (si usás .png o .webp, cambiá la línea
+  "const EXTENSION_IMAGEN" en el <script> de index.html).
+- Tamaño: 800 x 600 px (ancho x alto, horizontal), menos de 300kb cada una.
+- Si falta una foto o el nombre no coincide, la web muestra
+  automáticamente el emoji de ese producto en su lugar (no se rompe nada).
+
+Si en algún momento cambiás el orden o agregás/sacás productos, recordá
+que el "id" de cada producto en el array `productos` (dentro de
+index.html) es el que decide qué imagen le corresponde.

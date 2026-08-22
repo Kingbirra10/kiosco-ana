@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a2639">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Ofertas flash del día - Kiosco Ana">
+    <title>Kiosco Ana - Ofertas Flash</title>
+
+    <!-- Ícono (se ve al agregar la web a la pantalla de inicio del celular) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8F%AA</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%231a2639%22/><text x=%2250%22 y=%2266%22 font-size=%2255%22 text-anchor=%22middle%22>%F0%9F%8F%AA</text></svg>">
+
+    <!-- Vista previa linda al compartir el link (WhatsApp, redes, etc.) -->
+    <meta property="og:title" content="Kiosco Ana - Ofertas Flash">
+    <meta property="og:description" content="Mirá las ofertas de hoy en Kiosco Ana 🏪">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="images/imagen1.jpg">
+    <!-- Estilos (CSS) -->
+    <style>
+        /* --- Reset y estilos generales --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: #eef1f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        /* Contenedor centrado tipo "app de celular" (si se abre en PC, queda con ancho de teléfono) */
+        .app {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: #f5f7fa;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 16px 14px 24px 14px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.06);
+            position: relative;
+        }
+
+        /* --- Marca / nombre del kiosco --- */
+        .marca {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 2px 4px 2px;
+        }
+        .marca-icono {
+            font-size: 1.3rem;
+            animation: balanceo 2.6s ease-in-out infinite;
+            display: inline-block;
+        }
+        .marca-nombre {
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-align: center;
+            background: linear-gradient(90deg, #1a2639, #3a5a8c, #1a2639);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: brillo-texto 5s linear infinite;
+        }
+
+        @keyframes balanceo {
+            0%, 100% { transform: rotate(-8deg); }
+            50% { transform: rotate(8deg); }
+        }
+        @keyframes brillo-texto {
+            to { background-position: 200% center; }
+        }
+
+        /* --- Encabezado --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            padding: 6px 2px;
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1a2639;
+            letter-spacing: -0.5px;
+        }
+        .header h1 span {
+            color: #e63946;
+            background: #ffe5e7;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+        .menu-icon {
+            font-size: 1.6rem;
+            background: white;
+            border: none;
+            color: #1a2639;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-icon:active {
+            transform: scale(0.94);
+        }
+
+        /* --- Contenedor del producto destacado (Carrusel automático) --- */
+        .producto-destacado {
+            background: white;
+            border-radius: 28px;
+            padding: 22px 18px 26px 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.03);
+            animation: aparecer 0.35s ease;
+            touch-action: pan-y;
+            user-select: none;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .producto-destacado .categoria-badge {
+            display: inline-block;
+            background: #eef2f6;
+            color: #2c3e50;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 4px 14px;
+            border-radius: 40px;
+            margin-bottom: 12px;
+        }
+
+        /* Foto real del producto, con emoji como respaldo si falta la imagen */
+        .imagen-producto {
+            width: 100%;
+            max-width: 260px;
+            height: 190px;
+            margin: 0 auto 12px auto;
+            border-radius: 22px;
+            overflow: hidden;
+            background: linear-gradient(160deg, #eef2f6, #e4e9ef);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: flotar 3.5s ease-in-out infinite;
+        }
+
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .imagen-producto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .imagen-producto .emoji-fallback {
+            font-size: 4.2rem;
+        }
+
+        .producto-destacado .nombre-producto {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0b1a2b;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .producto-destacado .descripcion-corta {
+            color: #5b6f82;
+            font-size: 0.9rem;
+            margin-bottom: 14px;
+            font-weight: 400;
+        }
+
+        .producto-destacado .precio-oferta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .precio-anterior {
+            color: #8c9aa8;
+            font-size: 1.05rem;
+            text-decoration: line-through;
+            font-weight: 400;
+        }
+
+        .precio-actual {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #e63946;
+            letter-spacing: -0.5px;
+        }
+
+        .badge-descuento {
+            display: inline-block;
+            background: #1a2639;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 30px;
+            margin-top: 8px;
+            animation: pulso-descuento 2s ease-in-out infinite;
+        }
+
+        @keyframes pulso-descuento {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.35); }
+            50% { box-shadow: 0 0 0 6px rgba(230, 57, 70, 0); }
+        }
+
+        /* --- Puntos indicadores del carrusel --- */
+        .puntos-carrusel {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 18px;
+        }
+        .punto {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ccd5e0;
+            transition: all 0.25s ease;
+        }
+        .punto.activo {
+            width: 18px;
+            background: #e63946;
+        }
+
+        /* --- Mini lista de productos (acceso rápido) --- */
+        .subtitulo-seccion {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #8c9aa8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 4px 0 10px 4px;
+        }
+
+        .lista-productos-mini {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 2px 2px 10px 2px;
+            margin-bottom: 6px;
+            scrollbar-width: none;
+        }
+        .lista-productos-mini::-webkit-scrollbar {
+            display: none;
+        }
+
+        .item-mini {
+            flex: 0 0 auto;
+            background: white;
+            padding: 8px 16px 8px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1f2a3f;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1.5px solid #eaeef3;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s;
+        }
+        .item-mini.activo {
+            border-color: #e63946;
+            color: #e63946;
+            background: #fff5f5;
+        }
+
+        .item-mini .thumb-mini {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #eef2f6;
+        }
+
+        /* ============================================================ */
+        /* --- MENÚ LATERAL (panel con todos los productos A-Z) --- */
+        /* ============================================================ */
+        .overlay-menu {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 16, 28, 0.55);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            z-index: 90;
+        }
+        .overlay-menu.activo {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .panel-menu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            height: 100dvh;
+            width: 86%;
+            max-width: 340px;
+            background: #ffffff;
+            z-index: 100;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+            box-shadow: -10px 0 40px rgba(0,0,0,0.18);
+            display: flex;
+            flex-direction: column;
+        }
+        .panel-menu.activo {
+            transform: translateX(0);
+        }
+
+        .panel-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 18px 14px 18px;
+            border-bottom: 1px solid #eef1f5;
+        }
+        .panel-menu-header h2 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #1a2639;
+        }
+        .panel-menu-header p {
+            font-size: 0.75rem;
+            color: #8c9aa8;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+        .btn-cerrar-menu {
+            background: #f2f4f7;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            color: #1a2639;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .btn-cerrar-menu:active {
+            transform: scale(0.92);
+        }
+
+        .panel-menu-lista {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px 0 20px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 18px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f5f8;
+            transition: background 0.15s;
+        }
+        .menu-item:active {
+            background: #f7f9fb;
+        }
+        .menu-item.activo {
+            background: #fff5f5;
+        }
+
+        .menu-item .thumb {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #eef2f6;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .menu-item .info {
+            flex: 1;
+            min-width: 0;
+        }
+        .menu-item .info .nombre {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #1a2639;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .menu-item .info .categoria {
+            font-size: 0.72rem;
+            color: #a3b0bd;
+            font-weight: 500;
+        }
+        .menu-item .precio {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: #e63946;
+            flex-shrink: 0;
+        }
+
+        /* --- Botón flotante de WhatsApp --- */
+        .btn-whatsapp {
+            position: fixed;
+            right: 18px;
+            bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #25d366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+            z-index: 70;
+            animation: latido-wsp 2.2s ease-in-out infinite;
+        }
+        .btn-whatsapp svg {
+            width: 28px;
+            height: 28px;
+            fill: #ffffff;
+        }
+        .btn-whatsapp:active {
+            transform: scale(0.94);
+        }
+
+        @keyframes latido-wsp {
+            0%, 100% { box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45); }
+            50% { box-shadow: 0 6px 20px rgba(37, 211, 102, 0.75), 0 0 0 8px rgba(37, 211, 102, 0.12); }
+        }
+
+        /* --- Botón flotante de Mercado Pago (copia el alias) + su etiqueta --- */
+        .fab-mercadopago-wrap {
+            position: fixed;
+            left: 18px;
+            bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+            z-index: 70;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .etiqueta-fab {
+            position: relative;
+            background: #1a2639;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 30px;
+            white-space: nowrap;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+            animation: flotar-etiqueta 2.6s ease-in-out infinite;
+        }
+        .etiqueta-fab::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -5px;
+            transform: translateX(-50%);
+            border-width: 5px 5px 0 5px;
+            border-style: solid;
+            border-color: #1a2639 transparent transparent transparent;
+        }
+
+        @keyframes flotar-etiqueta {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .btn-mercadopago {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #009ee3;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 158, 227, 0.45);
+            cursor: pointer;
+            animation: latido-mp 2.2s ease-in-out infinite;
+        }
+        .btn-mercadopago svg {
+            width: 26px;
+            height: 26px;
+            fill: #ffffff;
+        }
+        .btn-mercadopago:active {
+            transform: scale(0.94);
+        }
+
+        @keyframes latido-mp {
+            0%, 100% { box-shadow: 0 6px 20px rgba(0, 158, 227, 0.45); }
+            50% { box-shadow: 0 6px 20px rgba(0, 158, 227, 0.75), 0 0 0 8px rgba(0, 158, 227, 0.12); }
+        }
+
+        /* --- Cartelito de confirmación (toast) --- */
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 90px;
+            transform: translateX(-50%) translateY(10px);
+            background: #1a2639;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            z-index: 80;
+            max-width: 85%;
+        }
+        .toast.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* --- Ajustes extra para pantallas muy chicas --- */
+        @media (max-width: 340px) {
+            .producto-destacado .nombre-producto {
+                font-size: 1.3rem;
+            }
+            .precio-actual {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app">
+
+        <!-- Nombre del kiosco -->
+        <div class="marca">
+            <span class="marca-icono">🏪</span>
+            <span class="marca-nombre">Kiosco Ana</span>
+        </div>
+
+        <!-- Encabezado con el botón del menú lateral -->
+        <header class="header">
+            <h1>Ofertas <span>⏳</span></h1>
+            <button class="menu-icon" id="btnAbrirMenu" aria-label="Abrir menú de productos">
+                ☰
+            </button>
+        </header>
+
+        <!-- === ZONA DEL CARRUSEL AUTOMÁTICO (producto destacado) === -->
+        <div id="productoContainer" class="producto-destacado">
+            <!-- Los datos se inyectan con JavaScript -->
+        </div>
+
+        <!-- Puntos indicadores -->
+        <div class="puntos-carrusel" id="puntosCarrusel"></div>
+
+        <!-- Mini muestra de todos los productos (acceso rápido, orden normal) -->
+        <div class="subtitulo-seccion">Acceso rápido</div>
+        <div class="lista-productos-mini" id="miniLista">
+            <!-- Se llena con JS -->
+        </div>
+
+    </div>
+
+    <!-- Botón flotante de WhatsApp para pedidos -->
+    <a class="btn-whatsapp"
+       id="btnWhatsapp"
+       href="https://wa.me/5491123192547?text=Hola%2C%20quiero%20hacer%20un%20pedido%20%F0%9F%9B%92"
+       target="_blank"
+       rel="noopener"
+       aria-label="Pedir por WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12.004 2C6.486 2 2 6.486 2 12.004c0 1.987.581 3.83 1.578 5.383L2 22l4.744-1.552A9.945 9.945 0 0 0 12.004 22C17.522 22 22 17.514 22 12.004 22 6.486 17.522 2 12.004 2zm0 18.166a8.13 8.13 0 0 1-4.147-1.134l-.297-.176-2.816.921.926-2.75-.194-.283a8.128 8.128 0 0 1-1.278-4.34c0-4.508 3.668-8.176 8.176-8.176s8.176 3.668 8.176 8.176-3.668 8.176-8.176 8.176z"/>
+        </svg>
+    </a>
+
+    <!-- Botón flotante que copia el alias de Mercado Pago para transferir -->
+    <div class="fab-mercadopago-wrap">
+        <span class="etiqueta-fab">Copiar alias de MP</span>
+        <button class="btn-mercadopago" id="btnMercadoPago" aria-label="Copiar alias de Mercado Pago para pagar">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Cartelito de confirmación al copiar el alias -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ============================================================ -->
+    <!-- MENÚ LATERAL: catálogo completo ordenado alfabéticamente -->
+    <!-- ============================================================ -->
+    <div class="overlay-menu" id="overlayMenu"></div>
+    <aside class="panel-menu" id="panelMenu" aria-label="Catálogo completo">
+        <div class="panel-menu-header">
+            <div>
+                <h2>Catálogo</h2>
+                <p>Orden alfabético · 10 productos</p>
+            </div>
+            <button class="btn-cerrar-menu" id="btnCerrarMenu" aria-label="Cerrar menú">✕</button>
+        </div>
+        <div class="panel-menu-lista" id="panelMenuLista">
+            <!-- Se llena con JS, ordenado A-Z -->
+        </div>
+    </aside>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT (Lógica del carrusel, imágenes y menú) -->
+    <script>
+        (function() {
+            "use strict";
+
+            // ------------------------------------------------------------------
+            // BASE DE DATOS DE PRODUCTOS (10 productos)
+            // El campo "id" define el número de imagen: id 1 -> images/imagen1.jpg
+            // Subí tus fotos a la carpeta "images" con esos nombres exactos
+            // (imagen1.jpg, imagen2.jpg ... imagen10.jpg). Si falta una imagen,
+            // se muestra el emoji como respaldo automáticamente.
+            // ------------------------------------------------------------------
+            const productos = [
+                { id: 1,  nombre: "Lata Brahma 473ml",           descripcion: "Cerveza en lata",                    categoria: "Bebidas",   emoji: "🍺", precioAnterior: 2500, precioOferta: 2400, moneda: "$" },
+                { id: 2,  nombre: "Brahma 1 Lt",                  descripcion: "Cerveza botella 1 litro",            categoria: "Bebidas",   emoji: "🍺", precioAnterior: 3900, precioOferta: 3800, moneda: "$" },
+                { id: 3,  nombre: "Manaos 2.25 Lt",                descripcion: "De cola, naranja y lima",            categoria: "Bebidas",   emoji: "🥤", precioAnterior: 1800, precioOferta: 1700, moneda: "$" },
+                { id: 4,  nombre: "Speed 473ml",                   descripcion: "Bebida energizante",                 categoria: "Bebidas",   emoji: "⚡", precioAnterior: 2900, precioOferta: 2800, moneda: "$" },
+                { id: 5,  nombre: "Papas Slices 100g",              descripcion: "Papas fritas sueltas",               categoria: "Snacks",    emoji: "🍟", precioAnterior: 2000, precioOferta: 1900, moneda: "$" },
+                { id: 6,  nombre: "Paquete Slice Cheddar y Jamón",  descripcion: "Snack sabor cheddar y jamón",        categoria: "Snacks",    emoji: "🧀", precioAnterior: 1900, precioOferta: 1800, moneda: "$" },
+                { id: 7,  nombre: "Maní Cervecero 100g",            descripcion: "Maní salado, ideal con birra",       categoria: "Snacks",    emoji: "🥜", precioAnterior: 2000, precioOferta: 1900, moneda: "$" },
+                { id: 8,  nombre: "Alfajor Aguila",                 descripcion: "Alfajor clásico",                    categoria: "Golosinas", emoji: "🍫", precioAnterior: 2000, precioOferta: 1900, moneda: "$" },
+                { id: 9,  nombre: "Chizitos",                       descripcion: "Snack de queso",                     categoria: "Snacks",    emoji: "🧀", precioAnterior: 600,  precioOferta: 500,  moneda: "$" },
+                { id: 10, nombre: "Larguitos",                      descripcion: "Snack crocante",                     categoria: "Snacks",    emoji: "🍿", precioAnterior: 600,  precioOferta: 500,  moneda: "$" }
+            ];
+
+            // Formatea precios en pesos con separador de miles (ej: 2400 -> "$2.400")
+            const formatPrecio = (producto, valor) => `${producto.moneda}${valor.toLocaleString('es-AR')}`;
+
+            // Carpeta y extensión de las imágenes. Si tus fotos son .png o .webp,
+            // cambiá esta línea (ej: "webp").
+            const EXTENSION_IMAGEN = "jpg";
+            const rutaImagen = (id) => `images/imagen${id}.${EXTENSION_IMAGEN}`;
+
+            // Número de WhatsApp del kiosco (usado por el botón flotante).
+            // Si cambia el número, solo hace falta tocar esta línea.
+            const WHATSAPP_NUMERO = "5491123192547";
+            const linkWhatsapp = (mensaje) =>
+                `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensaje)}`;
+
+            // Alias de Mercado Pago al que se copia para transferir.
+            // Si cambia el alias, solo hace falta tocar esta línea.
+            const ALIAS_MERCADOPAGO = "anadiaz10.mp";
+
+            // -------- REFERENCIAS DOM --------
+            const container = document.getElementById('productoContainer');
+            const btnWhatsapp = document.getElementById('btnWhatsapp');
+            const btnMercadoPago = document.getElementById('btnMercadoPago');
+            const toast = document.getElementById('toast');
+            const miniLista = document.getElementById('miniLista');
+            const puntosCarrusel = document.getElementById('puntosCarrusel');
+            const overlayMenu = document.getElementById('overlayMenu');
+            const panelMenu = document.getElementById('panelMenu');
+            const panelMenuLista = document.getElementById('panelMenuLista');
+            const btnAbrirMenu = document.getElementById('btnAbrirMenu');
+            const btnCerrarMenu = document.getElementById('btnCerrarMenu');
+
+            // -------- VARIABLES DE CONTROL --------
+            let indiceActual = 0;
+            let intervalo = null;
+
+            // -------- HELPER: crea el bloque de imagen con respaldo emoji --------
+            function crearBloqueImagen(producto, claseContenedor, claseImg) {
+                const cont = document.createElement('div');
+                cont.className = claseContenedor;
+
+                const img = document.createElement('img');
+                img.src = rutaImagen(producto.id);
+                img.alt = producto.nombre;
+                img.loading = 'lazy';
+                if (claseImg) img.className = claseImg;
+
+                img.onerror = function() {
+                    img.remove();
+                    const fallback = document.createElement('span');
+                    fallback.className = 'emoji-fallback';
+                    fallback.textContent = producto.emoji;
+                    cont.appendChild(fallback);
+                    cont.onerror = null;
+                };
+
+                cont.appendChild(img);
+                return cont;
+            }
+
+            // -------- FUNCIÓN PARA RENDERIZAR PRODUCTO DESTACADO --------
+            function renderizarProducto(index) {
+                const producto = productos[index % productos.length];
+                const descuento = Math.round(100 - (producto.precioOferta / producto.precioAnterior) * 100);
+
+                container.innerHTML = `
+                    <div class="categoria-badge">${producto.categoria}</div>
+                    <div class="nombre-producto">${producto.nombre}</div>
+                    <div class="descripcion-corta">${producto.descripcion}</div>
+                    <div class="precio-oferta">
+                        <span class="precio-anterior">${formatPrecio(producto, producto.precioAnterior)}</span>
+                        <span class="precio-actual">${formatPrecio(producto, producto.precioOferta)}</span>
+                    </div>
+                    <div class="badge-descuento">-${descuento}%</div>
+                `;
+
+                // Insertar la imagen antes de la descripción
+                const bloqueImg = crearBloqueImagen(producto, 'imagen-producto');
+                container.insertBefore(bloqueImg, container.querySelector('.nombre-producto'));
+
+                actualizarPuntos(index % productos.length);
+                actualizarActivoMiniLista(producto.id);
+            }
+
+            // -------- PUNTOS INDICADORES DEL CARRUSEL --------
+            function renderizarPuntos() {
+                puntosCarrusel.innerHTML = '';
+                productos.forEach((_, idx) => {
+                    const punto = document.createElement('div');
+                    punto.className = 'punto';
+                    punto.dataset.idx = idx;
+                    puntosCarrusel.appendChild(punto);
+                });
+            }
+            function actualizarPuntos(idxActivo) {
+                puntosCarrusel.querySelectorAll('.punto').forEach((p, idx) => {
+                    p.classList.toggle('activo', idx === idxActivo);
+                });
+            }
+
+            // -------- MINI LISTA (acceso rápido, orden original) --------
+            function renderizarMiniLista() {
+                miniLista.innerHTML = '';
+                productos.forEach((prod, idx) => {
+                    const item = document.createElement('div');
+                    item.className = 'item-mini';
+                    item.dataset.id = prod.id;
+
+                    const thumb = document.createElement('img');
+                    thumb.className = 'thumb-mini';
+                    thumb.src = rutaImagen(prod.id);
+                    thumb.alt = '';
+                    thumb.loading = 'lazy';
+                    thumb.onerror = function() {
+                        thumb.replaceWith(document.createTextNode(prod.emoji));
+                    };
+
+                    const texto = document.createElement('span');
+                    texto.textContent = prod.nombre.length > 14 ? prod.nombre.substring(0, 14) + '…' : prod.nombre;
+
+                    item.appendChild(thumb);
+                    item.appendChild(texto);
+
+                    item.addEventListener('click', function() {
+                        indiceActual = idx;
+                        renderizarProducto(indiceActual);
+                        reiniciarIntervalo();
+                    });
+
+                    miniLista.appendChild(item);
+                });
+            }
+            function actualizarActivoMiniLista(idActivo) {
+                miniLista.querySelectorAll('.item-mini').forEach(item => {
+                    item.classList.toggle('activo', Number(item.dataset.id) === idActivo);
+                });
+            }
+
+            // -------- MENÚ LATERAL: catálogo completo ordenado alfabéticamente --------
+            function renderizarPanelMenu() {
+                const ordenados = [...productos].sort((a, b) =>
+                    a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
+                );
+
+                panelMenuLista.innerHTML = '';
+                ordenados.forEach(prod => {
+                    const item = document.createElement('div');
+                    item.className = 'menu-item';
+                    item.dataset.id = prod.id;
+
+                    const bloqueImg = crearBloqueImagen(prod, 'thumb', 'thumb');
+
+                    const info = document.createElement('div');
+                    info.className = 'info';
+                    info.innerHTML = `
+                        <div class="nombre">${prod.nombre}</div>
+                        <div class="categoria">${prod.categoria}</div>
+                    `;
+
+                    const precio = document.createElement('div');
+                    precio.className = 'precio';
+                    precio.textContent = formatPrecio(prod, prod.precioOferta);
+
+                    item.appendChild(bloqueImg);
+                    item.appendChild(info);
+                    item.appendChild(precio);
+
+                    item.addEventListener('click', function() {
+                        const idx = productos.findIndex(p => p.id === prod.id);
+                        indiceActual = idx;
+                        renderizarProducto(indiceActual);
+                        reiniciarIntervalo();
+                        cerrarMenu();
+                    });
+
+                    panelMenuLista.appendChild(item);
+                });
+            }
+
+            function abrirMenu() {
+                overlayMenu.classList.add('activo');
+                panelMenu.classList.add('activo');
+                document.body.style.overflow = 'hidden';
+                pausarIntervalo(); // no seguir cambiando el producto mientras miran el catálogo
+            }
+            function cerrarMenu() {
+                overlayMenu.classList.remove('activo');
+                panelMenu.classList.remove('activo');
+                document.body.style.overflow = '';
+                reiniciarIntervalo(); // retoma el carrusel automático
+            }
+
+            btnAbrirMenu.addEventListener('click', abrirMenu);
+            btnCerrarMenu.addEventListener('click', cerrarMenu);
+            overlayMenu.addEventListener('click', cerrarMenu);
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') cerrarMenu();
+            });
+
+            // -------- CARRUSEL AUTOMÁTICO --------
+            function siguienteProducto() {
+                indiceActual = (indiceActual + 1) % productos.length;
+                renderizarProducto(indiceActual);
+            }
+            function anteriorProducto() {
+                indiceActual = (indiceActual - 1 + productos.length) % productos.length;
+                renderizarProducto(indiceActual);
+            }
+            function reiniciarIntervalo() {
+                if (intervalo) clearInterval(intervalo);
+                intervalo = setInterval(siguienteProducto, 5000);
+            }
+            function pausarIntervalo() {
+                if (intervalo) clearInterval(intervalo);
+                intervalo = null;
+            }
+
+            // -------- DESLIZAR CON EL DEDO (swipe) EN LA TARJETA --------
+            let toqueInicioX = 0;
+            let toqueInicioY = 0;
+            container.addEventListener('touchstart', function(e) {
+                toqueInicioX = e.changedTouches[0].clientX;
+                toqueInicioY = e.changedTouches[0].clientY;
+            }, { passive: true });
+            container.addEventListener('touchend', function(e) {
+                const deltaX = e.changedTouches[0].clientX - toqueInicioX;
+                const deltaY = e.changedTouches[0].clientY - toqueInicioY;
+                // Solo reacciona si el gesto fue mayormente horizontal
+                if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                    if (deltaX < 0) {
+                        siguienteProducto();
+                    } else {
+                        anteriorProducto();
+                    }
+                    reiniciarIntervalo();
+                }
+            }, { passive: true });
+
+            // -------- CARTELITO DE CONFIRMACIÓN (toast) --------
+            let toastTimeout = null;
+            function mostrarToast(texto) {
+                toast.textContent = texto;
+                toast.classList.add('visible');
+                if (toastTimeout) clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => toast.classList.remove('visible'), 3000);
+            }
+
+            // -------- BOTÓN DE MERCADO PAGO: copia el alias al portapapeles --------
+            function copiarAlias() {
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(ALIAS_MERCADOPAGO)
+                        .then(() => mostrarToast(`Alias copiado: ${ALIAS_MERCADOPAGO} — pegalo en Mercado Pago`))
+                        .catch(() => mostrarToast(`Tu alias de Mercado Pago es: ${ALIAS_MERCADOPAGO}`));
+                } else {
+                    // Alternativa para navegadores viejos o sin HTTPS
+                    const campoTemporal = document.createElement('textarea');
+                    campoTemporal.value = ALIAS_MERCADOPAGO;
+                    campoTemporal.style.position = 'fixed';
+                    campoTemporal.style.opacity = '0';
+                    document.body.appendChild(campoTemporal);
+                    campoTemporal.select();
+                    try {
+                        document.execCommand('copy');
+                        mostrarToast(`Alias copiado: ${ALIAS_MERCADOPAGO} — pegalo en Mercado Pago`);
+                    } catch (err) {
+                        mostrarToast(`Tu alias de Mercado Pago es: ${ALIAS_MERCADOPAGO}`);
+                    }
+                    document.body.removeChild(campoTemporal);
+                }
+            }
+            btnMercadoPago.addEventListener('click', copiarAlias);
+
+            // -------- INICIALIZACIÓN --------
+            function init() {
+                btnWhatsapp.href = linkWhatsapp('Hola, quiero hacer un pedido 🛍️');
+                renderizarPuntos();
+                renderizarProducto(0);
+                renderizarMiniLista();
+                renderizarPanelMenu();
+                reiniciarIntervalo();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+
+</body>
+</html>
